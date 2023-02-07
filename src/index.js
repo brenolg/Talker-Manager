@@ -1,10 +1,12 @@
 const express = require('express');
 const talkerRoute = require('./routes/talkerRoute');
+const loginRoute = require('./routes/loginRoute');
 
 const app = express();
 app.use(express.json());
 
 app.use('/talker', talkerRoute);
+app.use('/login', loginRoute);
 // Minhas Rotas
 
 const HTTP_OK_STATUS = 200;
