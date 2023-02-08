@@ -33,7 +33,6 @@ routerTalker.post('/',
     validateTalk,
     validateWatchedAt,
     validateRate,
-
     async (req, res) => {
         const talkers = await readTalker();
         const newTalker = { ...req.body };
@@ -45,6 +44,31 @@ routerTalker.post('/',
                } catch (error) {
         return console.log(`Arquivo nãos encontrado ${error}`);
     }
-});
+    });
+
+    routerTalker.put('/:id',
+    validateToken,
+    validateName,
+    validateAge,
+    validateTalk,
+    validateWatchedAt,
+    validateRate,
+        async (req, res) => {
+            try {
+                const { id } = req.params;
+                const { talk, name, age } = req.body;
+                const { rate, watchedAt } = talk;
+                const talkers = await readTalker();
+                const idPosition = talkers.findIndex((talker) => talker.id === Number(id));
+                talkers[idPosition] = { id: Number(id), talk, name, age, rate, watchedAt };
+                const updatedTalkers = JSON.stringify(talkers, null, 2);
+
+                 await fs.writeFile('src/talker.json', updatedTalkers);
+
+                return res.status(200).json(talkers[idPosition]);
+            } catch (error) {
+                return res.status(400).json({ message: `Arquivo nãos encontrado ${error}` });
+            }
+        });
 
 module.exports = routerTalker;
