@@ -63,12 +63,21 @@ routerTalker.post('/',
                 talkers[idPosition] = { id: Number(id), talk, name, age, rate, watchedAt };
                 const updatedTalkers = JSON.stringify(talkers, null, 2);
 
-                 await fs.writeFile('src/talker.json', updatedTalkers);
+                await fs.writeFile('src/talker.json', updatedTalkers);
 
                 return res.status(200).json(talkers[idPosition]);
             } catch (error) {
                 return res.status(400).json({ message: `Arquivo nãos encontrado ${error}` });
             }
         });
+
+    routerTalker.delete('/:id', validateToken, async (req, res) => {
+    const { id } = req.params;
+    const talkers = await readTalker();
+        const delTalker = talkers.find((talker) => talker.id !== Number(id));
+        await fs.writeFile('src/talker.json', JSON.stringify(delTalker));
+   
+    return res.status(204).json();
+});
 
 module.exports = routerTalker;
