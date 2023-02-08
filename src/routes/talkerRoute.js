@@ -1,13 +1,14 @@
 const express = require('express');
 const fs = require('fs/promises');
 const { readTalker } = require('../utils/readAndWriteFiles');
+const validateToken = require('../middlewares/validateToken');
 const {
     validateName,
     validateAge,
     validateTalk,
     validateWatchedAt,
     validateRate,
-    validateToken } = require('../middlewares/validateTalker');
+    } = require('../middlewares/validateTalker');
 
 const routerTalker = express.Router();
 
@@ -39,7 +40,7 @@ routerTalker.post('/',
         newTalker.id = talkers.length + 1;
         const newTalkers = [...talkers, newTalker];
          try {
-        await fs.writeFile('../talker.json', JSON.stringify(newTalkers), 'utf-8');
+        await fs.writeFile('src/talker.json', JSON.stringify(newTalkers), 'utf-8');
              res.status(201).json(newTalker);
                } catch (error) {
         return console.log(`Arquivo nãos encontrado ${error}`);
