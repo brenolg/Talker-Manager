@@ -12,6 +12,21 @@ const {
 
 const routerTalker = express.Router();
 
+routerTalker.get('/search', validateToken, async (req, res) => {
+    const { q } = req.query;
+    const talkers = await readTalker();
+    const query = q.toLowerCase();
+    const searchTalkers = talkers.filter((talker) => talker.name
+        .toLowerCase()
+        .includes(query));
+
+    if (searchTalkers.length === 0) res.status(200).json([]);
+   
+    return res.status(200).json(searchTalkers);
+});
+
+module.exports = routerTalker;
+
 routerTalker.get('/', async (_req, res) => {
     const talkers = await readTalker();
     if (!talkers) return res.status(200).json([]); 
@@ -46,38 +61,36 @@ routerTalker.post('/',
     }
     });
 
-    routerTalker.put('/:id',
+routerTalker.put('/:id',
     validateToken,
     validateName,
     validateAge,
     validateTalk,
     validateWatchedAt,
     validateRate,
-        async (req, res) => {
-            try {
-                const { id } = req.params;
-                const { talk, name, age } = req.body;
-                const { rate, watchedAt } = talk;
-                const talkers = await readTalker();
-                const idPosition = talkers.findIndex((talker) => talker.id === Number(id));
-                talkers[idPosition] = { id: Number(id), talk, name, age, rate, watchedAt };
-                const updatedTalkers = JSON.stringify(talkers, null, 2);
+    async (req, res) => {
+        try {
+            const { id } = req.params;
+            const { talk, name, age } = req.body;
+            const { rate, watchedAt } = talk;
+            const talkers = await readTalker();
+            const idPosition = talkers.findIndex((talker) => talker.id === Number(id));
+            talkers[idPosition] = { id: Number(id), talk, name, age, rate, watchedAt };
+            const updatedTalkers = JSON.stringify(talkers, null, 2);
 
-                await fs.writeFile('src/talker.json', updatedTalkers);
+            await fs.writeFile('src/talker.json', updatedTalkers);
 
-                return res.status(200).json(talkers[idPosition]);
-            } catch (error) {
-                return res.status(400).json({ message: `Arquivo nãos encontrado ${error}` });
-            }
-        });
+            return res.status(200).json(talkers[idPosition]);
+        } catch (error) {
+            return res.status(400).json({ message: `Arquivo nãos encontrado ${error}` });
+        }
+    });
 
-    routerTalker.delete('/:id', validateToken, async (req, res) => {
+routerTalker.delete('/:id', validateToken, async (req, res) => {
     const { id } = req.params;
     const talkers = await readTalker();
-        const delTalker = talkers.find((talker) => talker.id !== Number(id));
-        await fs.writeFile('src/talker.json', JSON.stringify(delTalker));
+    const delTalker = talkers.find((talker) => talker.id !== Number(id));
+    await fs.writeFile('src/talker.json', JSON.stringify(delTalker));
    
     return res.status(204).json();
 });
-
-module.exports = routerTalker;
