@@ -1,7 +1,7 @@
 
 # Talker Manager
 
-Aplicação de palestrantes (talkers), na qual é possível cadastrar, listar, pesquisar, editar e excluir palestrantes. A API possui o conjunto de operaçoes CRUD (Create, Read, Update e Delete) de palestrantes (talkers) e possui alguns endpoints que irão ler e escrever em um arquivo utilizando o módulo fs.
+Aplicação de palestrantes (talkers), na qual é possível cadastrar, listar, pesquisar, editar e excluir palestrantes. A API possui o conjunto de operações CRUD (Create, Read, Update e Delete) de palestrantes (talkers) e possui alguns endpoints que irão ler e escrever em um arquivo utilizando o módulo fs.
 
 ## Funcionalidades
 
@@ -51,3 +51,5 @@ npm install
 
 ## Agradecimentos
 Este projeto foi desenvolvido como parte do curso de Desenvolvimento de Software da Trybe. Agradeço à Trybe pela oportunidade de aprender e praticar SQL e outras tecnologias.
+
+
