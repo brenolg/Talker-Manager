@@ -8,6 +8,7 @@ Aplicação de palestrantes (talkers), na qual é possível cadastrar, listar, p
 -Endpoints que irão cadastrar, listar, pesquisar, editar e excluir palestrantes
 
 ## Tecnologias utilizadas
+- JavaScript
 - APIs REST
 - Express
 - C.R.U.D
